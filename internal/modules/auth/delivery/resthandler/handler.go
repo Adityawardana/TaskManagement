@@ -3,6 +3,7 @@ package resthandler
 import (
 	"net/http"
 
+	domain "taskmanagement/internal/modules/auth/domain"
 	authusecase "taskmanagement/internal/modules/auth/usecase"
 	shareddomain "taskmanagement/pkg/shared/domain"
 
@@ -22,14 +23,8 @@ func (h *RestHandler) RegisterRoutes(e *echo.Echo) {
 	e.POST("/auth/login", h.Login)
 }
 
-type registerReq struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	TeamName string `json:"team_name"`
-}
-
 func (h *RestHandler) Register(c echo.Context) error {
-	var req registerReq
+	var req domain.RegisterRequestObject
 	if err := c.Bind(&req); err != nil {
 		return shareddomain.NewAppError(400, "INVALID_REQUEST", "invalid request body", err)
 	}
@@ -40,13 +35,8 @@ func (h *RestHandler) Register(c echo.Context) error {
 	return c.JSON(http.StatusCreated, map[string]any{"id": user.ID, "email": user.Email, "created_at": user.CreatedAt})
 }
 
-type loginReq struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 func (h *RestHandler) Login(c echo.Context) error {
-	var req loginReq
+	var req domain.LoginRequestObject
 	if err := c.Bind(&req); err != nil {
 		return shareddomain.NewAppError(400, "INVALID_REQUEST", "invalid request body", err)
 	}

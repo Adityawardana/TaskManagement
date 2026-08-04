@@ -19,3 +19,27 @@ type TaskQuery struct {
 	Limit  int
 	Page   int
 }
+
+type CreateTaskRequestObject struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
+}
+
+type UpdateTaskRequestObject struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
+}
+
+type AssignTaskRequestObject struct {
+	AssigneeID string `json:"assignee_id"`
+}
+
+// AssignTaskResponseObject represents the result of a task assignment
+type AssignTaskResponseObject struct {
+	Status     string    `json:"status"`
+	TaskID     string    `json:"task_id"`
+	AssigneeID string    `json:"assignee_id"`
+	AssignedAt time.Time `json:"assigned_at"`
+}

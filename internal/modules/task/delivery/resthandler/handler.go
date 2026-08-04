@@ -31,16 +31,10 @@ func (h *RestHandler) RegisterRoutes(g *echo.Group) {
 	g.POST("/tasks/:id/assign", h.AssignTask)
 }
 
-type createTaskReq struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Status      string `json:"status"`
-}
-
 func (h *RestHandler) CreateTask(c echo.Context) error {
 	userID := c.Get(shared.CtxUserIDKey).(string)
 
-	var req createTaskReq
+	var req domain.CreateTaskRequestObject
 	if err := c.Bind(&req); err != nil {
 		return shareddomain.NewAppError(400, "INVALID_REQUEST", "invalid request body", err)
 	}
@@ -75,15 +69,9 @@ func (h *RestHandler) GetTask(c echo.Context) error {
 	return c.JSON(http.StatusOK, task)
 }
 
-type updateTaskReq struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Status      string `json:"status"`
-}
-
 func (h *RestHandler) UpdateTask(c echo.Context) error {
 	userID := c.Get(shared.CtxUserIDKey).(string)
-	var req updateTaskReq
+	var req domain.UpdateTaskRequestObject
 	if err := c.Bind(&req); err != nil {
 		return shareddomain.NewAppError(400, "INVALID_REQUEST", "invalid request body", err)
 	}
@@ -102,13 +90,9 @@ func (h *RestHandler) DeleteTask(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
-type assignReq struct {
-	AssigneeID string `json:"assignee_id"`
-}
-
 func (h *RestHandler) AssignTask(c echo.Context) error {
 	userID := c.Get(shared.CtxUserIDKey).(string)
-	var req assignReq
+	var req domain.AssignTaskRequestObject
 	if err := c.Bind(&req); err != nil {
 		return shareddomain.NewAppError(400, "INVALID_REQUEST", "invalid request body", err)
 	}

@@ -13,7 +13,7 @@ type TaskUsecase interface {
 	GetTask(ctx context.Context, userID, taskID string) (domain.Task, error)
 	UpdateTask(ctx context.Context, userID, taskID, title, description, status string) (domain.Task, error)
 	DeleteTask(ctx context.Context, userID, taskID string) error
-	AssignTask(ctx context.Context, userID, taskID, assigneeID string) (AssignResult, error)
+	AssignTask(ctx context.Context, userID, taskID, assigneeID string) (domain.AssignTaskResponseObject, error)
 }
 
 type TaskRepository interface {

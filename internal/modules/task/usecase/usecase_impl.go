@@ -14,14 +14,6 @@ type taskUsecaseImpl struct {
 	notifier Notifier
 }
 
-// AssignResult represents the result of a task assignment
-type AssignResult struct {
-	Status     string    `json:"status"`
-	TaskID     string    `json:"task_id"`
-	AssigneeID string    `json:"assignee_id"`
-	AssignedAt time.Time `json:"assigned_at"`
-}
-
 // NewTaskUsecase usecase impl constructor
 func NewTaskUsecase(tasks TaskRepository, notifier Notifier) TaskUsecase {
 	return &taskUsecaseImpl{tasks: tasks, notifier: notifier}
@@ -60,14 +52,14 @@ func (u *taskUsecaseImpl) DeleteTask(ctx context.Context, userID, taskID string)
 	return u.tasks.DeleteTask(ctx, userID, taskID)
 }
 
-func (u *taskUsecaseImpl) AssignTask(ctx context.Context, userID, taskID, assigneeID string) (AssignResult, error) {
+func (u *taskUsecaseImpl) AssignTask(ctx context.Context, userID, taskID, assigneeID string) (domain.AssignTaskResponseObject, error) {
 	err := u.tasks.AssignTask(ctx, userID, taskID, assigneeID, func(ctx context.Context) error {
 		return u.notifier.NotifyAssignment(ctx, taskID, assigneeID)
 	})
 	if err != nil {
-		return AssignResult{}, err
+		return domain.AssignTaskResponseObject{}, err
 	}
-	return AssignResult{
+	return domain.AssignTaskResponseObject{
 		Status:     "assigned",
 		TaskID:     taskID,
 		AssigneeID: assigneeID,
