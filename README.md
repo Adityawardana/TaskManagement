@@ -8,7 +8,7 @@ This project implements the backend technical assessment for a multi-user task m
 - PostgreSQL
 
 ## Prerequisites
-- Go 1.22 or newer
+- Go 1.21 or newer
 - PostgreSQL 14 or newer
 
 ## How to running the Project
